@@ -54,30 +54,25 @@ export default defineConfig({
     aiContent({
       enable: false,
       aiSummary: {
-        enable: true,
+        enable: false,
         title: "AI 摘要",
         showModel: true,
       },
       aiRecommend: {
-        enable: true,
+        enable: false,
         limit: 3,
         minSimilarity: 0.4,
       },
     }),
     visibilityTitle({
-      enable: true,
+      enable: false,
       leaveTitle: "👀 你先忙，我等你回来~",
       returnTitle: "🎉 欢迎回来！",
       restoreDelay: 3000,
     }),
     nyxPlayer({
-      enable: true,
-      urls: [
-        {
-          name: "默认歌单",
-          url: "https://music.163.com/m/playlist?id=12834717281&creatorId=12676493230",
-        },
-      ],
+      enable: false,
+      urls: [],
       preset: "shokax",
       darkModeTarget: ":root[data-theme=dark]",
       metingBaseURL: "https://meting.api.zkz098.cn/",
