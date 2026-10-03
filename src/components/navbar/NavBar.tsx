@@ -15,7 +15,6 @@ interface NavBarProps {
 }
 
 function NavBar(props: NavBarProps) {
-  const [showNav, setShowNav] = createSignal(true);
   const [atTop, setAtTop] = createSignal(true);
   const [isDark, setIsDark] = createSignal(false);
 
@@ -28,8 +27,6 @@ function NavBar(props: NavBarProps) {
     ticking = true;
     window.requestAnimationFrame(() => {
       const current = window.scrollY;
-      if (current > lastScroll) setShowNav(false);
-      else if (current < lastScroll) setShowNav(true);
 
       lastScroll = current;
       setAtTop(current <= 0);
@@ -75,10 +72,9 @@ function NavBar(props: NavBarProps) {
       id="nav"
       aria-label="主导航"
       class={`h-12.5 fixed top-0 w-full z-9 backdrop-blur-8 backdrop-saturate-180 ${atTop() ? "nav-top" : "nav-bg"}`.trim()}
-      style={showNav() ? "" : "transform: translateY(-100%);"}
     >
       <div class="mb-0 ml-auto mr-auto mt-0 flex flex-nowrap h-full w-[calc(100%-0.625rem)] w-85%">
-        <LeftNavBtn clickCallback={props.clickToggleCallback} />
+        <LeftNavBtn clickCallback={props.clickToggleCallback} atTop={atTop} />
         <MenuBar name={props.name} navLinks={props.navLinks} />
         <RightNavBar>
           <li>

@@ -14,12 +14,12 @@ function NavLinkItem(props: NavLinkItemProps) {
   const mergedClass = () => [props.class ?? ""].filter(Boolean).join(" ");
 
   return (
-    <NavItem class={mergedClass()}>
-      <a href={props.href ?? "#"} aria-label={props.ariaLabel}>
+    <a href={props.href ?? "#"} aria-label={props.ariaLabel}>
+      <NavItem class={mergedClass()}>
         {props.icon && <div class={iconClasses()}></div>}
         {props.text}
-      </a>
-    </NavItem>
+      </NavItem>
+    </a>
   );
 }
 

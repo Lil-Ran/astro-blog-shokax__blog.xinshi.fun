@@ -29,6 +29,7 @@
   padding: 0.625rem 0.5rem 0.625rem;
   cursor: pointer;
   color: inherit;
+  transition: all 0.4s;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -71,7 +72,6 @@
 }
 
 .line-menu {
-  background-color: var(--header-text-color);
   vertical-align: top;
   border-radius: 0.0625rem;
   width: 100%;
@@ -80,7 +80,15 @@
   display: inline-block;
   position: relative;
   left: 0;
-  box-shadow: var(--shadow-float-soft);
+}
+
+/* 汉堡线条跟随导航配色。限定在 .line-menu 上，避免与 #nav 的 .nav-bg/.nav-top 混淆 */
+.line-menu.nav-bg {
+  background-color: var(--text-color);
+}
+
+.line-menu.nav-top {
+  background-color: var(--header-text-color);
 }
 
 @media (min-width: 1024px) {
