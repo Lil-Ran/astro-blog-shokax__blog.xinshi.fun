@@ -364,3 +364,22 @@
 .grey {
   color: var(--color-grey);
 }
+
+[data-theme="dark"] .sidebar .tab li,
+[data-theme="dark"] .overview .menu .item,
+[data-theme="dark"] .index.wrap .card .message .btn,
+[data-theme="dark"] img,
+[data-theme="dark"] [data-background-image] {
+  transition: all 0.2s ease-in-out 0s;
+  opacity: 0.75;
+}
+[data-theme="dark"] .sidebar .tab li:hover,
+[data-theme="dark"] .overview .menu .item:hover,
+[data-theme="dark"] .index.wrap .card .message .btn:hover,
+[data-theme="dark"] img:hover,
+[data-theme="dark"] [data-background-image]:hover {
+  opacity: 0.9;
+}
+[data-theme="dark"] #imgs::before {
+  background-color: rgba(0, 0, 0, 0.5);
+}

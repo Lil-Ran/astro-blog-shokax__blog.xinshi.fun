@@ -142,6 +142,6 @@ main {
   display: none;
 }
 
-.body.md {
+* {
   text-autospace: normal;
 }
