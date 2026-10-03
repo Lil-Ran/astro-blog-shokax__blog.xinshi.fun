@@ -174,8 +174,10 @@ import HyacineOutlet from "@hyacine/plugin-astro/components/HyacineOutlet.astro"
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+    <link rel="apple-touch-icon" href="/assets/avatar.png"/>
     <meta name="generator" content={Astro.generator} />
+    <link rel="alternate" href="/rss.xml" title={siteName} type="application/rss+xml">
 
     <script>
       import "virtual:hyacine/runtime";
@@ -195,7 +197,7 @@ import HyacineOutlet from "@hyacine/plugin-astro/components/HyacineOutlet.astro"
       clickToggleCallback={() => void 0}
     />
     <SearchPage client:idle selector="#search" />
-    <Loading />
+    <!-- <Loading /> -->
     <div id="container">
       <HeaderCover
         enable={coverConfig.enable}
