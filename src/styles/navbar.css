@@ -37,20 +37,19 @@
 }
 
 /* MenuBar */
-.menu-title {
+/* #nav 前缀提权：.desktop-only/.menu-title 会与 uno 的 .inline-block 等
+   单类工具类同特异性竞争，dev 下 uno 注入两次且可能排在后面 */
+#nav .menu-title {
   display: block;
 }
 
-.desktop-only {
+#nav .desktop-only {
   display: none;
 }
 
 @media (min-width: 1024px) {
-  .menu-title {
-    display: inline-block;
-  }
-
-  .desktop-only {
+  #nav .menu-title,
+  #nav .desktop-only {
     display: inline-block;
   }
 }
@@ -82,12 +81,13 @@
   left: 0;
 }
 
-/* 汉堡线条跟随导航配色。限定在 .line-menu 上，避免与 #nav 的 .nav-bg/.nav-top 混淆 */
-.line-menu.nav-bg {
+/* 汉堡线条配色。类名用 line-top/line-bg 而非复用 nav-top/nav-bg：
+   全局 .nav-bg 还携带 #nav 的 background-image（青粉渐变），会盖住线条纯色 */
+.line-menu.line-bg {
   background-color: var(--text-color);
 }
 
-.line-menu.nav-top {
+.line-menu.line-top {
   background-color: var(--header-text-color);
 }
 

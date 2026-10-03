@@ -21,13 +21,13 @@ function LeftNavBtn(props: LeftNavBtnProps) {
     >
       <div class="line-height-0 p-5 w-5.5 box-unset">
         <div
-          class={`line-menu ${sidebarOpen() ? "line-1" : ""} ${atTop() ? "nav-top" : "nav-bg"}`}
+          class={`line-menu ${sidebarOpen() ? "line-1" : ""} ${atTop() ? "line-top" : "line-bg"}`}
         ></div>
         <div
-          class={`line-menu mt-0.75 ${sidebarOpen() ? "line-2" : ""} ${atTop() ? "nav-top" : "nav-bg"}`}
+          class={`line-menu mt-0.75 ${sidebarOpen() ? "line-2" : ""} ${atTop() ? "line-top" : "line-bg"}`}
         ></div>
         <div
-          class={`line-menu mt-0.75 ${sidebarOpen() ? "line-3" : ""} ${atTop() ? "nav-top" : "nav-bg"}`}
+          class={`line-menu mt-0.75 ${sidebarOpen() ? "line-3" : ""} ${atTop() ? "line-top" : "line-bg"}`}
         ></div>
       </div>
     </button>
