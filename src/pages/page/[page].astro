@@ -21,9 +21,9 @@ export const getStaticPaths = (async ({ paginate }) => {
   const pageSize = themeConfig.home?.pageSize ?? 10;
 
   // Astro 原生分页：生成 /page/1, /page/2 ...
-  // 但我们只输出 /page/2..N，第一页交给 src/pages/index.astro（输出 index.html）
+  // 首页仍由 src/pages/index.astro 输出，这里同时保留 /page/1/ 便于直达
   const pages = paginate(regularPosts, { pageSize });
-  return pages.filter((p) => p.params.page !== "1");
+  return pages;
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props as {
@@ -34,7 +34,12 @@ const { page } = Astro.props as {
   };
 };
 
-const pageTitle = `${themeConfig.brand?.logo || ""} = ${themeConfig.brand?.title || ""} = ${themeConfig.brand?.subtitle || ""} - 第${page.currentPage}页`;
+let pageTitle = themeConfig.home?.title?.customTitle ?? "";
+if (themeConfig.home?.title?.behavior === "default") {
+  pageTitle =
+    `${themeConfig.brand?.logo || ""} = ${themeConfig.brand?.title || ""} = ${themeConfig.brand?.subtitle || ""}`.trim();
+}
+pageTitle = `${pageTitle} - 第${page.currentPage}页`;
 
 // Build pagination navigation
 const paginationNavigation = {
