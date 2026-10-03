@@ -4,6 +4,17 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { hyacineLoader } from "@hyacine/sdk/astro";
 import { FOLDER_CATEGORY_TOKEN, withFolderCategories } from "./toolkit/posts/folderCategories";
+import type { LicenseType } from "./toolkit/themeConfig";
+
+const LICENSES: LicenseType[] = [
+  "CC-BY-4.0",
+  "CC-BY-SA-4.0",
+  "CC-BY-ND-4.0",
+  "CC-BY-NC-4.0",
+  "CC-BY-NC-SA-4.0",
+  "CC-BY-NC-ND-4.0",
+  "NOREPRINT",
+];
 
 const hyacineApiUrl =
   (typeof import.meta !== "undefined" && import.meta.env?.HYACINE_API_URL) ||
@@ -67,17 +78,9 @@ const posts = defineCollection({
       draft: z.boolean().optional(),
       cover: z.union([image(), z.string()]).optional(),
       sticky: z.boolean().optional(),
-      license: z
-        .enum([
-          "CC-BY-4.0",
-          "CC-BY-SA-4.0",
-          "CC-BY-ND-4.0",
-          "CC-BY-NC-4.0",
-          "CC-BY-NC-SA-4.0",
-          "CC-BY-NC-ND-4.0",
-          "NOREPRINT",
-        ])
-        .optional(),
+      license: z.enum(LICENSES).optional(),
+      showCopyright: z.boolean().optional(),
+      showReward: z.boolean().optional(),
       // 加密相关字段
       encrypted: z.boolean().default(false),
       password: z.string().optional(), // 构建时用于加密，不会输出到前端
@@ -151,17 +154,7 @@ const specials = defineCollection({
       updated: z.coerce.date().optional(),
       cover: image().optional(),
       permalink: z.string().optional(),
-      license: z
-        .enum([
-          "CC-BY-4.0",
-          "CC-BY-SA-4.0",
-          "CC-BY-ND-4.0",
-          "CC-BY-NC-4.0",
-          "CC-BY-NC-SA-4.0",
-          "CC-BY-NC-ND-4.0",
-          "NOREPRINT",
-        ])
-        .optional(),
+      license: z.enum(LICENSES).optional(),
       showCopyright: z.boolean().optional(),
       showReward: z.boolean().optional(),
     }),
