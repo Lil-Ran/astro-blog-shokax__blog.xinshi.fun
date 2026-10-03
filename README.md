@@ -1,3 +1,13 @@
+# LilRan's Blog
+
+https://blog.xinshi.fun is an instance of [Astro Blog ShokaX](https://github.com/theme-shoka-x/astro-blog-shokax).
+
+Below is the content of the original README.
+
+<br><br><br>
+
+---
+
 [English](./README.md) | [中文](./README_zh-cn.md)
 
 # Astro Blog ShokaX

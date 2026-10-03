@@ -1,3 +1,13 @@
+# LilRan 的博客
+
+https://blog.xinshi.fun 是 [Astro Blog ShokaX](https://github.com/theme-shoka-x/astro-blog-shokax) 的一个实例。
+
+以下是原 README 的内容。
+
+<br><br><br>
+
+---
+
 [English](./README.md) | [中文](./README_zh-cn.md)
 
 # Astro Blog ShokaX
