@@ -47,7 +47,7 @@ const estimatedReadingTime = wordCount
       title={`${t("post.createdAt")}: ${formatFullDate(date)}`}
     >
       <span class="icon">
-        <i class="ic i-ri-calendar-line"></i>
+        <i class="ic i-ri-calendar-line inline-block align-text-bottom"></i>
       </span>
       <span class="text">{t("post.publishedAt")} </span>
       <time itemprop="dateCreated datePublished" datetime={date.toISOString()}>
@@ -59,7 +59,7 @@ const estimatedReadingTime = wordCount
       wordCount && (
         <span class="item" title={t("post.wordCount")}>
           <span class="icon">
-            <i class="ic i-ri-edit-2-line" />
+            <i class="ic i-ri-edit-2-line inline-block align-text-bottom" />
           </span>
           <span class="text">{t("post.wordCount")} </span>
           <span>{wordCount.toLocaleString()}</span>
@@ -70,7 +70,7 @@ const estimatedReadingTime = wordCount
 
     <span class="item" title={t("post.readingTime")}>
       <span class="icon">
-        <i class="ic i-ri-time-line"></i>
+        <i class="ic i-ri-time-line inline-block align-text-bottom"></i>
       </span>
       <span class="text">{t("post.readingTime")} </span>
       <span>{estimatedReadingTime} {t("post.minutes")}</span>
