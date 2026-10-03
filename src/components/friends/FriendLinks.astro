@@ -2,9 +2,9 @@
 export interface FriendLink {
   url: string;
   title: string;
-  desc: string;
-  author: string;
-  avatar: string;
+  desc?: string;
+  author?: string;
+  avatar?: string;
   color?: string;
   siteImage?: string;
 }
@@ -40,20 +40,22 @@ const { links } = Astro.props;
           </a>
         )}
         <div class="friend-body">
-          <a
-            class="friend-avatar"
-            href={link.url}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`访问 ${link.author} 站点`}
-          >
-            <img
-              src={link.avatar}
-              alt={`${link.author} 头像`}
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
+          {link.avatar && (
+            <a
+              class="friend-avatar"
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`访问 ${link.author ?? link.title} 站点`}
+            >
+              <img
+                src={link.avatar}
+                alt={`${link.author ?? link.title} 头像`}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          )}
           <div class="friend-content">
             <div class="friend-title-row">
               <a
@@ -65,10 +67,12 @@ const { links } = Astro.props;
                 {link.title}
               </a>
             </div>
-            <div class="friend-meta">
-              <span class="friend-author">by {link.author}</span>
-            </div>
-            <p class="friend-desc">{link.desc}</p>
+            {link.author && (
+              <div class="friend-meta">
+                <span class="friend-author">by {link.author}</span>
+              </div>
+            )}
+            {link.desc && <p class="friend-desc">{link.desc}</p>}
           </div>
         </div>
       </article>
@@ -87,7 +91,7 @@ const { links } = Astro.props;
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 12rem;
+    /* min-height: 12rem; */
     padding: 1.15rem 1.25rem 1.25rem;
     border-radius: 0.875rem;
     background: var(--grey-0);
