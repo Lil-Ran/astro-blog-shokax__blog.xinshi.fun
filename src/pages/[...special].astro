@@ -1,0 +1,145 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PostHeader from "@/components/post/PostHeader.astro";
+import PostFooter from "@/components/post/PostFooter.astro";
+import HyacineOutlet from "@hyacine/plugin-astro/components/HyacineOutlet.astro";
+import { currentLocale } from "@/i18n";
+import { getCollection, render } from "astro:content";
+import themeConfig from "@/theme.config";
+import type { TocItem } from "@/components/sidebar/SidebarTypes";
+import { createPostContentContainer } from "@/toolkit/posts/createPostContentContainer";
+import { toPostHref } from "@/toolkit/posts/url";
+import { wrapRenderedCodeBlocks } from "@/toolkit/wrapRenderedCodeBlocks";
+import { wrapRenderedImages } from "@/toolkit/wrapRenderedImages";
+import { wrapCodeGroups } from "@/toolkit/wrapCodeGroups";
+import { wrapExternalLinks } from "@/toolkit/wrapExternalLinks";
+
+import "@/styles/post.css";
+import "@/styles/spoiler.css";
+import "katex/dist/katex-swap.min.css";
+import { avatar } from "@/components/Images.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("specials");
+  const sortedPosts = posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  const container = await createPostContentContainer();
+
+  return Promise.all(
+    sortedPosts.map(async (post) => {
+      const { Content } = await render(post);
+
+      const renderedContentHtml = wrapExternalLinks(
+        wrapRenderedImages(
+          wrapCodeGroups(wrapRenderedCodeBlocks(await container.renderToString(Content))),
+        ),
+        { siteUrl: import.meta.env.SITE },
+      );
+
+      return {
+        params: { special: post.data.permalink ?? post.id },
+        props: { post, renderedContentHtml },
+      };
+    }),
+  );
+}
+
+interface Props {
+  post: import("astro:content").CollectionEntry<"specials">;
+  renderedContentHtml?: string;
+}
+
+const { post, renderedContentHtml } = Astro.props as Props;
+
+const {
+  title,
+  description,
+  date,
+  updated,
+  cover,
+  permalink: metaPermalink,
+  license,
+  showCopyright,
+  showReward,
+} = post.data;
+
+const toc: TocItem[] = (await render(post)).headings.map((h) => ({
+  id: h.slug,
+  text: h.text,
+  level: h.depth,
+}));
+
+const plainText = (post.body || "").replaceAll(/[#*`_[\]()]/g, "").replaceAll(/\s+/g, " ");
+const wordCount = plainText.length;
+const readTime = Math.ceil(wordCount / 300);
+
+const author = themeConfig.sidebar?.author || "Author";
+const siteName = themeConfig.siteName || "Site";
+
+// 复用 toPostHref 的 slug 规范化，再去掉 posts 前缀得到 specials 的路径
+const postPath = toPostHref(metaPermalink ?? post.id).replace(/^\/posts/, "");
+const permalink = import.meta.env.SITE
+  ? new URL(postPath, import.meta.env.SITE).toString()
+  : postPath;
+
+const postMeta = { date, wordCount, readTime };
+---
+
+<Layout toc={toc} currentSlug={post.id} pageTitle={title} postMeta={postMeta} pageCover={cover}>
+  <Fragment slot="head">
+    <meta
+      name="description"
+      content={description || post.body?.slice(0, 150).replace(/\s+/g, " ")}
+    />
+  </Fragment>
+
+  <Fragment>
+    <div class="article wrap">
+      <article
+        itemscope
+        itemtype="http://schema.org/Article"
+        class="post block"
+        data-pagefind-body
+        lang={currentLocale}
+      >
+        <link itemprop="mainEntityOfPage" href={permalink} />
+
+        <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <meta itemprop="image" content={avatar.src} />
+          <meta itemprop="name" content={author} />
+          <meta itemprop="description" content={`${siteName}`} />
+        </span>
+
+        <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+          <meta itemprop="name" content={siteName} />
+        </span>
+
+        <HyacineOutlet name="post-header" context={post} />
+
+        <PostHeader title={title} date={date} updated={updated} wordCount={wordCount} />
+
+        <div class="body md" itemprop="articleBody">
+          <div class="post-content" set:html={renderedContentHtml ?? ""} />
+        </div>
+
+        <PostFooter
+          date={date}
+          updated={updated}
+          permalink={permalink}
+          title={title}
+          author={author}
+          siteName={siteName}
+          showCopyright={showCopyright}
+          showReward={showReward}
+          license={license}
+        />
+
+        <HyacineOutlet name="post-footer" context={post} />
+      </article>
+    </div>
+
+    <div id="comments" class="comment">
+      <HyacineOutlet name="comment" />
+    </div>
+  </Fragment>
+</Layout>

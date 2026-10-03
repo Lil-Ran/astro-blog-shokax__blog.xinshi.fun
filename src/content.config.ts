@@ -134,6 +134,39 @@ const posts = defineCollection({
     }),
 });
 
+const specials = defineCollection({
+  loader: withFolderCategories(
+    glob({
+      pattern: "**/*.{md,mdx}",
+      base: "src/specials",
+    }),
+  ),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      date: z.coerce.date().refine((date) => !Number.isNaN(date.getTime()), {
+        message: "Invalid date format",
+      }),
+      updated: z.coerce.date().optional(),
+      cover: image().optional(),
+      permalink: z.string().optional(),
+      license: z
+        .enum([
+          "CC-BY-4.0",
+          "CC-BY-SA-4.0",
+          "CC-BY-ND-4.0",
+          "CC-BY-NC-4.0",
+          "CC-BY-NC-SA-4.0",
+          "CC-BY-NC-ND-4.0",
+          "NOREPRINT",
+        ])
+        .optional(),
+      showCopyright: z.boolean().optional(),
+      showReward: z.boolean().optional(),
+    }),
+});
+
 const momentsLoader: Loader = useRemoteD1Loader
   ? // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- hyacineLoader 兼容 Astro Loader 协议
     (hyacineLoader({
@@ -162,5 +195,6 @@ const moments = defineCollection({
 
 export const collections = {
   posts,
+  specials,
   moments,
 };
