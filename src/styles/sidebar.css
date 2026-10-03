@@ -28,6 +28,9 @@
     z-index: var(--z-sidebar);
     width: 280px;
     height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -93,6 +96,7 @@
 @media (max-width: 1023px) {
   #sidebar > .inner {
     width: 100%;
+    min-height: 100%;
   }
 
   .panels > .inner {
@@ -217,15 +221,23 @@
 .menu .item {
   border-radius: 0.9375rem;
   margin-bottom: 0.625rem;
-  display: block;
+  display: none;
   color: var(--grey-5);
   transition: all 0.2s ease-in-out;
   list-style: none;
 }
 
-.menu .item a {
+@media (max-width: 1023px) {
+  .menu .item {
+    display: block;
+  }
+}
+
+.menu .item a,
+.menu .item .btn {
   color: inherit;
   display: block;
+  width: 100%;
   line-height: 3;
   text-decoration: none;
   transition: all 0.2s ease-in-out;

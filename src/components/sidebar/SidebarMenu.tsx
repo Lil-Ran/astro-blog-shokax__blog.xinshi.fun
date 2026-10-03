@@ -40,10 +40,10 @@ function SidebarMenu(props: SidebarMenuProps) {
           if (item.isDropdown && dropboxItems.length > 0) {
             return (
               <li class="item dropdown">
-                <a href={url} rel="section">
+                <div class="btn">
                   {icon && <div class={`ic ${icon} ${ICON_CLASS}`}></div>}
                   {text}
-                </a>
+                </div>
                 <ul class="submenu">
                   {dropboxItems.map((subItem) => (
                     <li class="item">

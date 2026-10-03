@@ -15,7 +15,7 @@ function SidebarAuthor(props: SidebarAuthorProps) {
         <div class="author" itemscope itemtype="http://schema.org/Person">
           {props.avatarImage && (
             <div
-              class="image border border-body-bg-shadow block mx-auto max-w-40 p-0.5 shadow-[0_0_1rem_0.625rem_var(--body-bg-shadow)] rounded-full transition-transform duration-300 overflow-hidden"
+              class="image border border-body-bg-shadow block mx-auto max-w-30 p-0.5 shadow-[0_0_1rem_0_var(--body-bg-shadow)] rounded-full transition-transform duration-300 overflow-hidden"
               itemprop="image"
             >
               {props.avatarImage}
