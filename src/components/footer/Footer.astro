@@ -76,15 +76,16 @@ const iconColor = sanitizeThemeColor(
     <div class="status text-center w-full">
       <!-- Copyright Section -->
       <div class="copyright block my-2">
-        {since !== currentYear && <span>&copy; {since} -</span>}
+        <span>&copy;{" "}</span>
+        {since !== currentYear && <span>{since}{" - "}</span>}
         <span>{currentYear}</span>
         <span
           class="with-love inline-block mx-0.5 ml-0.5"
           style={`color: ${iconColor}`}
         >
-          <i class={`${iconName}`}></i>
+          <i class={`${iconName} inline-block`}></i>
         </span>
-        <span class="author">{author} @ {siteName}</span>
+        <span class="author">{author}</span>
       </div>
 
       <!-- Statistics Section -->
@@ -95,13 +96,13 @@ const iconColor = sanitizeThemeColor(
               <div class="i-ri-line-chart-fill inline-block align-text-bottom text-1rem" />
             </span>
             <span title={t("footer.totalWordsTitle")}>
-              {totalWords} {t("post.words")}
+              {" "}{totalWords} {t("post.words")}
             </span>
             <span class="post-meta-divider mx-2"> | </span>
             <span class="post-meta-item-icon mr-0 inline">
               <div class="i-ri-cup-fill inline-block align-text-bottom text-1rem" />
             </span>
-            <span title={t("footer.estimatedReadingTimeTitle")}>{readingTimeStr}</span>
+            <span title={t("footer.estimatedReadingTimeTitle")}>{" "}{readingTimeStr}</span>
           </div>
         )
       }
@@ -137,7 +138,7 @@ const iconColor = sanitizeThemeColor(
       <!-- ICP Section -->
       {
         config.icp?.enable && (
-          <div class="icp block text-xs leading-loose mt-4">
+          <div class="icp block text-xs leading-loose">
             <a
               href={config.icp.icpurl || "https://beian.miit.gov.cn/"}
               target="_blank"
