@@ -1,6 +1,6 @@
 import { defineConfig } from "@hyacine/plugin-core";
 import siteUptime from "@hyacine/plugin-site-uptime";
-import mouseFirework from "@hyacine/plugin-mouse-firework";
+// import mouseFirework from "@hyacine/plugin-mouse-firework";
 import articleAgeWarning from "@hyacine/plugin-article-age-warning";
 import vercount from "@hyacine/plugin-vercount";
 import analytics from "@hyacine/plugin-analytics";
@@ -27,13 +27,13 @@ export default defineConfig({
   },
   plugins: [
     siteUptime({
-      siteCreatedAt: "2024-01-01T00:00:00Z",
+      siteCreatedAt: "2024-03-12T00:00:00Z",
       prefixText: "本站已运行",
     }),
-    mouseFirework({
-      count: 16,
-      radius: 80,
-    }),
+    // mouseFirework({
+    //   count: 16,
+    //   radius: 80,
+    // }),
     articleAgeWarning({
       maxAgeDays: 180,
     }),

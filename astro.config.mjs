@@ -106,7 +106,7 @@ if (themeConfig.diagnostics?.suppressFsWatcherMaxListenersWarning !== false) {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://preview.astro.kaitaku.xyz",
+  site: "https://blog.xinshi.fun",
   trailingSlash: "always",
   build: {
     format: "directory",
@@ -171,9 +171,6 @@ export default defineConfig({
     plugins: [
       Font.vite({
         scanFiles: ["src/**/*.{tsx,ts,js,jsx,md,mdx,json,astro}"],
-        css: {
-          fontDisplay: "optional",
-        },
       }),
       esToolkitPlugin(),
     ],
@@ -210,7 +207,7 @@ export default defineConfig({
         noteDirective(),
         spanDirective(),
         codeGroup(),
-        [spoiler, { title: "..." }],
+        [spoiler, { title: "这都被你发现了" }],
       ],
       hastPlugins: [satteriAutolinkHeadings()],
     }),

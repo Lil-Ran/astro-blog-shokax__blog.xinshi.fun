@@ -38,6 +38,10 @@ function collectConfigIcons() {
     });
   }
 
+  if (themeConfig.footer?.icon?.name) {
+    pushNormalizedIcon(icons, themeConfig.footer.icon.name);
+  }
+
   // 预留：若未来在 friends.links 中引入 icon 字段，这里会自动纳入。
   if (themeConfig.friends?.links) {
     themeConfig.friends.links.forEach((link) => {
