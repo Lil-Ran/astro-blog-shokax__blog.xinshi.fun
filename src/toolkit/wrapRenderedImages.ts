@@ -1,5 +1,5 @@
 // 匹配 <img ...> 或 <img .../>：贪婪单量词 [^>] 无回溯风险（S8786）
-const IMAGE_TAG_PATTERN = /<img\b[^>]*>/gi;
+const IMAGE_TAG_PATTERN = /<img\b[^>]*>(?!<\/a>)/gi;
 
 // 提取 title 属性（双引号或单引号，非空）
 const TITLE_PATTERN = /\btitle=(?<quote>["'])(?<title>[^"']+)\k<quote>/i;

@@ -67,6 +67,7 @@ export function wrapExternalLinks(html: string, options: WrapExternalLinksOption
     if (HAS_TARGET.test(attrs)) return match;
     if (HAS_EXTURL_ICON.test(text)) return match;
     if (!isExternalHref(href, siteOrigin)) return match;
+    if (["<img", "<image-zoom", "<figure"].some((tag) => text.startsWith(tag))) return match;
 
     const newAttrs = `${attrs} class="exturl" target="_blank" rel="noopener noreferrer"`;
     return `<a${newAttrs}>${text}<i class="i-ri-external-link-line" aria-hidden="true"></i></a>`;
