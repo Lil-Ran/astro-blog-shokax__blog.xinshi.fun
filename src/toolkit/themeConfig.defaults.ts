@@ -167,4 +167,8 @@ export const DEFAULT_THEME_CONFIG: ShokaXThemeConfig = {
     license: "CC-BY-NC-SA-4.0",
     show: true,
   },
+  reward: {
+    enable: false,
+    accounts: {},
+  },
 };

@@ -395,6 +395,13 @@ interface CopyrightConfig {
   show?: boolean;
 }
 
+export interface RewardConfig {
+  /** 是否启用打赏功能 */
+  enable?: boolean;
+  /** 打赏账户标题与图片 URL 配置 */
+  accounts?: Record<string, string>;
+}
+
 export interface ShokaXThemeConfig {
   /**
    * 网站名称。
@@ -484,6 +491,9 @@ export interface ShokaXThemeConfig {
    * 诊断与命令行输出配置。
    */
   diagnostics?: DiagnosticsConfig;
+
+  /** 打赏功能配置 */
+  reward?: RewardConfig;
 }
 
 type Primitive = string | number | boolean | bigint | symbol | null | undefined;

@@ -278,6 +278,13 @@
 
 #qr {
   padding-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#qr[hidden] {
   display: none;
 }
 
@@ -287,7 +294,7 @@
 
 #qr img {
   display: inline-block;
-  max-width: 100%;
+  max-width: 10rem;
 }
 
 #qr p {

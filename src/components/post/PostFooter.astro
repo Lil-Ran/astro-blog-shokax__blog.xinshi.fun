@@ -1,6 +1,6 @@
 ---
 import { currentLocale, t } from "@/i18n";
-import type { LicenseType } from "@/toolkit/themeConfig";
+import type { LicenseType, RewardConfig } from "@/toolkit/themeConfig";
 import themeConfig from "@/theme.config";
 
 interface Props {
@@ -12,10 +12,7 @@ interface Props {
   siteName?: string;
   showCopyright?: boolean;
   showReward?: boolean;
-  rewardConfig?: {
-    enable: boolean;
-    accounts?: Record<string, string>;
-  };
+  rewardConfig?: RewardConfig;
   license?: LicenseType;
 }
 
@@ -27,10 +24,12 @@ const {
   author = "Author",
   siteName = "Site",
   showCopyright = true,
-  showReward = false,
-  rewardConfig,
+  showReward,
+  rewardConfig: propsRewardConfig,
   license = themeConfig.copyright?.license || "CC-BY-NC-SA-4.0",
 } = Astro.props;
+
+const rewardConfig = propsRewardConfig ?? themeConfig.reward;
 
 function formatDate(d: Date): string {
   return d.toLocaleDateString(currentLocale, {
@@ -111,14 +110,14 @@ const isNoReprint = license === "NOREPRINT";
   }
 
   {
-    showReward && rewardConfig?.enable && (
+    (showReward === undefined || showReward) && rewardConfig?.enable && (
       <div class="reward">
-        <button type="button">
+        <button type="button" aria-expanded="false" data-reward-toggle>
           <i class="ic i-ri-heart-pulse-line" />
           {t("post.rewardSupport")}
         </button>
         <p>{t("post.rewardDescription")}</p>
-        <div id="qr">
+        <div id="qr" data-reward-qr hidden>
           {rewardConfig.accounts &&
             Object.entries(rewardConfig.accounts).map(([name, image]) => (
               <div>
@@ -181,4 +180,25 @@ const isNoReprint = license === "NOREPRINT";
       </div>
     )
   }
+  <script is:inline>
+    const initRewardToggle = () => {
+      document.querySelectorAll("[data-reward-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const reward = button.closest(".reward");
+          const qr = reward?.querySelector("[data-reward-qr]");
+
+          if (!qr) {
+            return;
+          }
+
+          const isExpanded = button.getAttribute("aria-expanded") === "true";
+          button.setAttribute("aria-expanded", String(!isExpanded));
+          qr.hidden = isExpanded;
+        });
+      });
+    };
+
+    document.addEventListener("astro:page-load", initRewardToggle);
+    document.addEventListener("DOMContentLoaded", initRewardToggle);
+  </script>
 </footer>
