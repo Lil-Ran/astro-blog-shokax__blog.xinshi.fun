@@ -4,7 +4,7 @@ import { join, relative } from "node:path";
 import solid from "@astrojs/solid-js";
 import { defineConfig } from "astro/config";
 import { hyacinePlugin } from "@hyacine/plugin-astro";
-import { satteri } from "@astrojs/markdown-satteri";
+import { satteri, satteriHeadingIdsPlugin } from "@astrojs/markdown-satteri";
 import sitemap from "@astrojs/sitemap";
 import esToolkitPlugin from "vite-plugin-es-toolkit";
 import { transformerColorizedBrackets } from "@shikijs/colorized-brackets";
@@ -209,7 +209,11 @@ export default defineConfig({
         codeGroup(),
         [spoiler, { title: "这都被你发现了" }],
       ],
-      hastPlugins: [satteriAutolinkHeadings()],
+      // 顺序要求：markdown-satteri 内置的 heading-ids 插件排在用户 hastPlugins
+      // 之后，所以这里先自己跑一遍 satteriHeadingIdsPlugin 把 id 写进标题，
+      // autolink-headings 才能取到 id 追加 # 锚点。
+      // 两者都写成工厂（每篇文档重新调用），避免 slugger 的重名计数跨文章累积。
+      hastPlugins: [() => satteriHeadingIdsPlugin(), () => satteriAutolinkHeadings()],
     }),
   },
 });

@@ -21,7 +21,11 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
-          include: ["src/toolkit/**/*.test.ts", "src/i18n/**/*.test.ts"],
+          include: [
+            "src/toolkit/**/*.test.ts",
+            "src/i18n/**/*.test.ts",
+            "src/satteri-plugins/**/*.test.ts",
+          ],
           environment: "node",
         },
       },
