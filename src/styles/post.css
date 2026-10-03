@@ -28,7 +28,7 @@
   font-size: 0.875em;
   line-height: 1.45;
   white-space: break-spaces;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   vertical-align: baseline;
 }
 
