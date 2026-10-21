@@ -6,10 +6,10 @@ interface Props {
   date: Date;
   updated?: Date;
   wordCount?: number;
-  readingTime?: number;
+  readTime?: number;
 }
 
-const { title, date, wordCount, readingTime } = Astro.props;
+const { title, date, updated, wordCount, readTime } = Astro.props;
 
 // Format date helper
 function formatDate(d: Date): string {
@@ -32,10 +32,7 @@ function formatFullDate(d: Date): string {
   });
 }
 
-// Calculate reading time (assuming 200 words per minute)
-const estimatedReadingTime = wordCount
-  ? Math.ceil(wordCount / 200)
-  : readingTime || 1;
+const hasUpdated = !!updated && formatDate(date) !== formatDate(updated);
 ---
 
 <header>
@@ -56,6 +53,23 @@ const estimatedReadingTime = wordCount
     </span>
 
     {
+      hasUpdated && (
+        <span
+          class="item"
+          title={`${t("post.updatedAt")}: ${formatFullDate(updated)}`}
+        >
+          <span class="icon">
+            <i class="ic i-ri-calendar-check-line inline-block align-text-bottom"></i>
+          </span>
+          <span class="text">{t("post.updatedAt")} </span>
+          <time itemprop="dateModified" datetime={updated.toISOString()}>
+            {formatDate(updated)}
+          </time>
+        </span>
+      )
+    }
+
+    {
       wordCount && (
         <span class="item" title={t("post.wordCount")}>
           <span class="icon">
@@ -73,7 +87,7 @@ const estimatedReadingTime = wordCount
         <i class="ic i-ri-time-line inline-block align-text-bottom"></i>
       </span>
       <span class="text">{t("post.readingTime")} </span>
-      <span>{estimatedReadingTime} {t("post.minutes")}</span>
+      <span>{readTime || 1} {t("post.minutes")}</span>
     </span>
   </div>
 </header>

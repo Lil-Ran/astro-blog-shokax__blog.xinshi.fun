@@ -14,6 +14,10 @@ import type {
 } from "@/components/sidebar/SidebarTypes";
 import type { EncryptedData } from "@/toolkit/encryption/types";
 import { encryptContent } from "@/toolkit/encryption/crypto";
+import {
+  calculateReadTime,
+  countWords,
+} from "@/toolkit/posts/calculateStats";
 import { createPostContentContainer } from "@/toolkit/posts/createPostContentContainer";
 import { toPostHref, toTagHref } from "@/toolkit/posts/url";
 import { wrapRenderedCodeBlocks } from "@/toolkit/wrapRenderedCodeBlocks";
@@ -200,14 +204,8 @@ const navigation: QuickNavigation = {
   nextTitle: nextPost?.title,
 };
 
-// Calculate word count from content
-const plainText = (post.body || "")
-  .replaceAll(/[#*`_[\]()]/g, "")
-  .replaceAll(/\s+/g, " ");
-const wordCount = plainText.length;
-
-// Calculate read time (assume 300 words per minute)
-const readTime = Math.ceil(wordCount / 300);
+const wordCount = countWords(post.body || "");
+const readTime = calculateReadTime(wordCount);
 
 // Get site info from config
 const siteConfig = themeConfig.sidebar || {};
@@ -290,10 +288,22 @@ const postMeta = {
           date={post.data.date}
           updated={post.data.updated}
           wordCount={wordCount}
+          readTime={readTime}
         />
 
-        {/* Hyacine Plugin Outlet: Post Header */}
-        <HyacineOutlet name="post-header" context={post} />
+        {/* Hyacine Plugin Outlet: Post Header（年龄警告按更新日期计算，未显式更新过则回退发布日期） */}
+        <HyacineOutlet
+          name="post-header"
+          context={
+            {
+              ...post,
+              data: {
+                ...post.data,
+                updated: post.data.updated ?? post.data.date,
+              },
+            } as typeof post
+          }
+        />
 
         {/* Hyacine Plugin Outlet: AI 摘要（encrypted 时插件内部自动短路） */}
         <HyacineOutlet
@@ -331,8 +341,6 @@ const postMeta = {
         </div>
 
         <PostFooter
-          date={post.data.date}
-          updated={post.data.updated}
           permalink={permalink}
           title={post.data.title}
           author={author}

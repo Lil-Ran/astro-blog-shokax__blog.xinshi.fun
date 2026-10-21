@@ -36,6 +36,9 @@ export default defineConfig({
     // }),
     articleAgeWarning({
       maxAgeDays: 180,
+      // 按更新日期计算文章年龄；页面侧传入的 context 已将未显式更新过的文章回退为发布日期
+      dateField: "updated",
+      message: "这篇文章已经很久没有更新了，内容可能已过时，请结合当前情况判断。",
     }),
     vercount(),
     analytics({

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateReadTime, getExcerpt, transformIndexPosts } from "./transformIndexPosts";
+import { getExcerpt, transformIndexPosts } from "./transformIndexPosts";
 
 type MockPost = {
   id: string;
@@ -14,13 +14,6 @@ type MockPost = {
 };
 
 describe("transformIndexPosts", () => {
-  it("calculates read time with ceil strategy", () => {
-    expect(calculateReadTime(0)).toBe(0);
-    expect(calculateReadTime(1)).toBe(1);
-    expect(calculateReadTime(300)).toBe(1);
-    expect(calculateReadTime(301)).toBe(2);
-  });
-
   it("returns encrypted excerpt when post is encrypted", () => {
     const post: MockPost = {
       id: "encrypted-post",

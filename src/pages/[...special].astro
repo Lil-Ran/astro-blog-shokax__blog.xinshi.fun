@@ -8,6 +8,10 @@ import { getCollection, render } from "astro:content";
 import themeConfig from "@/theme.config";
 import type { TocItem } from "@/components/sidebar/SidebarTypes";
 import { createPostContentContainer } from "@/toolkit/posts/createPostContentContainer";
+import {
+  calculateReadTime,
+  countWords,
+} from "@/toolkit/posts/calculateStats";
 import { toPostHref } from "@/toolkit/posts/url";
 import { wrapRenderedCodeBlocks } from "@/toolkit/wrapRenderedCodeBlocks";
 import { wrapRenderedImages } from "@/toolkit/wrapRenderedImages";
@@ -69,9 +73,8 @@ const toc: TocItem[] = (await render(post)).headings.map((h) => ({
   level: h.depth,
 }));
 
-const plainText = (post.body || "").replaceAll(/[#*`_[\]()]/g, "").replaceAll(/\s+/g, " ");
-const wordCount = plainText.length;
-const readTime = Math.ceil(wordCount / 300);
+const wordCount = countWords(post.body || "");
+const readTime = calculateReadTime(wordCount);
 
 const author = themeConfig.sidebar?.author || "Author";
 const siteName = themeConfig.siteName || "Site";
@@ -114,17 +117,33 @@ const postMeta = { date, wordCount, readTime };
           <meta itemprop="name" content={siteName} />
         </span>
 
-        <HyacineOutlet name="post-header" context={post} />
+        {/* Hyacine Plugin Outlet: Post Header（年龄警告按更新日期计算，未显式更新过则回退发布日期） */}
+        <HyacineOutlet
+          name="post-header"
+          context={
+            {
+              ...post,
+              data: {
+                ...post.data,
+                updated: updated ?? date,
+              },
+            } as typeof post
+          }
+        />
 
-        <PostHeader title={title} date={date} updated={updated} wordCount={wordCount} />
+        <PostHeader
+          title={title}
+          date={date}
+          updated={updated}
+          wordCount={wordCount}
+          readTime={readTime}
+        />
 
         <div class="body md" itemprop="articleBody">
           <div class="post-content" set:html={renderedContentHtml ?? ""} />
         </div>
 
         <PostFooter
-          date={date}
-          updated={updated}
           permalink={permalink}
           title={title}
           author={author}

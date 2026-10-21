@@ -1,11 +1,10 @@
 import type { ImageMetadata } from "astro";
 import type { CollectionEntry } from "astro:content";
-import { countWords } from "./calculateStats";
+import { calculateReadTime, countWords, DEFAULT_WORDS_PER_MINUTE } from "./calculateStats";
 import { resolveExcerpt } from "./excerpt";
 import { toPostProjection } from "./projection";
 
 const DEFAULT_EXCERPT_LENGTH = 300;
-const DEFAULT_WORDS_PER_MINUTE = 300;
 
 /**
  * 列表卡片摘要来源。
@@ -44,17 +43,6 @@ export interface TransformIndexPostsOptions {
    * - 仅当 excerptSource 为 "ai" 时参与选取
    */
   aiSummaries?: Map<string, string>;
-}
-
-export function calculateReadTime(
-  wordCount: number,
-  wordsPerMinute: number = DEFAULT_WORDS_PER_MINUTE,
-): number {
-  if (wordCount <= 0 || wordsPerMinute <= 0) {
-    return 0;
-  }
-
-  return Math.ceil(wordCount / wordsPerMinute);
 }
 
 export function getExcerpt(
