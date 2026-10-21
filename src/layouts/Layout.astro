@@ -31,6 +31,7 @@ import "@/styles/mdx-components.css";
 
 import Loading from "@/components/Loading.astro";
 import { covers, resolveFixedCover } from "@/components/Images.astro";
+import SeoMeta from "@/components/SeoMeta.astro";
 import FloatingToolbar from "@/components/FloatingToolbar";
 import TwoColumnLayout from "@/layouts/TwoColumnLayout.astro";
 import ThreeColumnLayout from "@/layouts/ThreeColumnLayout.astro";
@@ -38,6 +39,7 @@ import { generateTagCloud } from "@/toolkit/posts/generateTagCloud";
 import { createWidgetPosts } from "@/toolkit/posts/createWidgetPosts";
 import { toTagHref } from "@/toolkit/posts/url";
 import { resolveHeaderCovers } from "@/toolkit/headerCover";
+import { resolveTwitterSite } from "@/toolkit/seo/seoTags";
 import Footer from "@/components/footer/Footer.astro";
 import type { ImageMetadata } from "astro";
 import { currentLocale } from "@/i18n";
@@ -55,6 +57,15 @@ interface Props {
   currentSlug?: string;
   navigation?: QuickNavigation;
   pageTitle?: string;
+  pageDescription?: string;
+  pageMeta?: {
+    type?: "website" | "article";
+    publishedTime?: Date;
+    modifiedTime?: Date;
+    tags?: string[];
+    author?: string;
+    noindex?: boolean;
+  };
   postMeta?: PostMeta;
   indexPage?: boolean;
   pageCover?: ImageMetadata | string;
@@ -66,6 +77,8 @@ const {
   currentSlug = "",
   navigation = {},
   pageTitle = "",
+  pageDescription = "",
+  pageMeta = {},
   postMeta,
   indexPage = false,
   pageCover,
@@ -81,6 +94,14 @@ const widgetsConfig = themeConfig.widgets || {};
 const tagCloudConfig = themeConfig.tagCloud || {};
 const layoutConfig = themeConfig.layout || {};
 const rightSidebarConfig = layoutConfig.rightSidebar || {};
+const twitterSite = resolveTwitterSite(sidebarConfig.social?.x?.url);
+
+// 分享图兜底：社交平台对 avif 支持很差，统一用 public 下的 png
+const DEFAULT_OG_IMAGE = {
+  src: "/assets/avatar.png",
+  width: 960,
+  height: 960,
+};
 const layoutMode = layoutConfig.mode || "two-column";
 const enableThirdColumn = layoutMode === "three-column";
 const shouldComputeRightSidebarRandomPosts =
@@ -182,6 +203,24 @@ import HyacineOutlet from "@hyacine/plugin-astro/components/HyacineOutlet.astro"
     <script>
       import "virtual:hyacine/runtime";
     </script>
+
+    <SeoMeta
+      title={pageTitle || siteName}
+      description={pageDescription || sidebarConfig.description}
+      path={Astro.url.pathname}
+      image={pageCover ?? DEFAULT_OG_IMAGE}
+      imageAlt={pageTitle ? `${pageTitle} - ${siteName}` : siteName}
+      type={pageMeta.type ?? "website"}
+      siteName={siteName}
+      siteUrl={import.meta.env.SITE}
+      locale={currentLocale}
+      publishedTime={pageMeta.publishedTime}
+      modifiedTime={pageMeta.modifiedTime}
+      tags={pageMeta.tags}
+      author={pageMeta.author ?? sidebarConfig.author}
+      twitterSite={twitterSite}
+      noindex={pageMeta.noindex}
+    />
 
     <slot name="head" />
 

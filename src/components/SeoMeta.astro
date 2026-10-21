@@ -1,0 +1,74 @@
+---
+import { buildSeoTags, type OgImage, type OgType } from "@/toolkit/seo/seoTags";
+import type { ImageMetadata } from "astro";
+
+type ImageSource = ImageMetadata | OgImage | string;
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 页面路径，如 /posts/foo/；相对路径会补全为绝对地址 */
+  path: string;
+  image?: ImageSource;
+  imageAlt?: string;
+  type?: OgType;
+  siteName: string;
+  siteUrl?: string;
+  locale?: string;
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
+  author?: string;
+  twitterSite?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  path,
+  image,
+  imageAlt,
+  type = "website",
+  siteName,
+  siteUrl,
+  locale,
+  publishedTime,
+  modifiedTime,
+  tags,
+  author,
+  twitterSite,
+  noindex,
+} = Astro.props;
+
+const tagsOutput = buildSeoTags({
+  siteName,
+  title,
+  description,
+  url: path,
+  siteUrl,
+  locale,
+  type,
+  image: image
+    ? typeof image === "string"
+      ? image
+      : { src: image.src, width: image.width, height: image.height }
+    : undefined,
+  imageAlt,
+  publishedTime,
+  modifiedTime,
+  tags,
+  author,
+  twitterSite,
+  noindex,
+});
+---
+
+{
+  tagsOutput.map((attrs) => (
+    <meta
+      {...(attrs.property ? { property: attrs.property } : { name: attrs.name })}
+      content={attrs.content}
+    />
+  ))
+}

@@ -15,11 +15,7 @@ const msgBackHome = t("common.home");
 const msgNoScript = t("random.noScript");
 ---
 
-<Layout pageTitle={pageTitle}>
-  <Fragment slot="head">
-    <meta name="robots" content="noindex, nofollow" />
-  </Fragment>
-
+<Layout pageTitle={pageTitle} pageMeta={{ noindex: true }}>
   <div
     class="wrap random-page"
     data-post-urls={JSON.stringify(postUrls)}

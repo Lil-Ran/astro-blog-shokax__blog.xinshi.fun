@@ -31,13 +31,10 @@ const pageTitle = "动态";
 
 <Layout
   pageTitle={pageTitle}
+  pageDescription="动态 - 记录生活的点滴"
   indexPage={true}
   navigation={paginationNavigation}
 >
-  <Fragment slot="head">
-    <meta name="description" content="动态 - 记录生活的点滴" />
-  </Fragment>
-
   <MomentsContent moments={pageMoments} />
   <Pagination
     currentPage={currentPage}

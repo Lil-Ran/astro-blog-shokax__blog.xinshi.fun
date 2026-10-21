@@ -37,9 +37,8 @@ const permalink = import.meta.env.SITE
   : postPath;
 ---
 
-<Layout pageTitle={title} pageCover={cover}>
+<Layout pageTitle={title} pageDescription={description} pageCover={cover}>
   <Fragment slot="head">
-    <meta name="description" content={description} />
     <link rel="canonical" href={permalink} />
   </Fragment>
 

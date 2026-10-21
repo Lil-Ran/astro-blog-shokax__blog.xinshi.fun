@@ -58,13 +58,10 @@ const paginationNavigation = {
 
 <Layout
   pageTitle={pageTitle}
+  pageDescription={themeConfig.sidebar?.description}
   indexPage={true}
   navigation={paginationNavigation}
 >
-  <Fragment slot="head">
-    <meta name="description" content={themeConfig.sidebar?.description} />
-  </Fragment>
-
   <IndexContent
     posts={page.data}
     stickyPosts={[]}

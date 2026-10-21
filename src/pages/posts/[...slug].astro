@@ -212,6 +212,11 @@ const siteConfig = themeConfig.sidebar || {};
 const author = siteConfig.author || "Author";
 const siteName = themeConfig.siteName || "Site";
 
+const description =
+  post.data.description ||
+  post.body?.slice(0, 150).replace(/\s+/g, " ") ||
+  "";
+
 // Current post path (trailing slash required by project routing)
 const postPath = toPostHref(post.id);
 
@@ -234,18 +239,18 @@ const postMeta = {
   currentSlug={post.id}
   navigation={navigation}
   pageTitle={post.data.title}
+  pageDescription={description}
+  pageMeta={{
+    type: "article",
+    publishedTime: post.data.date,
+    modifiedTime: post.data.updated,
+    tags: post.data.tags ?? undefined,
+    author,
+    noindex: isEncrypted,
+  }}
   postMeta={postMeta}
   pageCover={post.data.cover}
 >
-  <Fragment slot="head">
-    <meta
-      name="description"
-      content={post.data.description ||
-        post.body?.slice(0, 150).replace(/\s+/g, " ")}
-    />
-    {/* 加密文章添加 noindex */}
-    {isEncrypted && <meta name="robots" content="noindex, nofollow" />}
-  </Fragment>
 
   <Fragment>
     <div

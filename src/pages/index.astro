@@ -89,12 +89,10 @@ if (themeConfig.home?.title?.behavior === "default") {
 
 <Layout
   pageTitle={pageTitle}
+  pageDescription={themeConfig.sidebar?.description}
   indexPage={true}
   navigation={paginationNavigation}
 >
-  <Fragment slot="head">
-    <meta name="description" content={themeConfig.sidebar?.description} />
-  </Fragment>
 
   <IndexContent
     posts={pagePosts}

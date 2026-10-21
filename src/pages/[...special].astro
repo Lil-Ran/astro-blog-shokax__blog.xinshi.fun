@@ -88,13 +88,20 @@ const permalink = import.meta.env.SITE
 const postMeta = { date, wordCount, readTime };
 ---
 
-<Layout toc={toc} currentSlug={post.id} pageTitle={title} postMeta={postMeta} pageCover={cover}>
-  <Fragment slot="head">
-    <meta
-      name="description"
-      content={description || post.body?.slice(0, 150).replace(/\s+/g, " ")}
-    />
-  </Fragment>
+<Layout
+  toc={toc}
+  currentSlug={post.id}
+  pageTitle={title}
+  pageDescription={description || post.body?.slice(0, 150).replace(/\s+/g, " ") || ""}
+  pageMeta={{
+    type: "article",
+    publishedTime: date,
+    modifiedTime: updated,
+    author,
+  }}
+  postMeta={postMeta}
+  pageCover={cover}
+>
 
   <Fragment>
     <div class="article wrap">
